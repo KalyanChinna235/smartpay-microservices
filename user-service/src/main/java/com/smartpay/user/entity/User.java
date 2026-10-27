@@ -28,7 +28,7 @@ public class User {
 
     // Store a password hash, never the raw password.
     @Column(nullable = false)
-    private String passwordHash;
+    private String password;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -61,12 +61,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public LocalDateTime getCreatedAt() {

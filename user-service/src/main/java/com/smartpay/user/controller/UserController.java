@@ -1,10 +1,12 @@
-package com.smartpay.user;
+package com.smartpay.user.controller;
 
 import com.smartpay.user.dto.RegisterRequest;
 import com.smartpay.user.dto.UserResponse;
 import com.smartpay.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -32,5 +34,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserResponse register(@Valid @RequestBody RegisterRequest request) {
         return userService.register(request);
+    }
+
+    @GetMapping("/me")
+    public Map<String, String> getCurrentUser(@AuthenticationPrincipal UserDetails user) {
+
+        return Map.of(
+                "email", user.getUsername(),
+                "message", "Authenticated successfully"
+        );
     }
 }
