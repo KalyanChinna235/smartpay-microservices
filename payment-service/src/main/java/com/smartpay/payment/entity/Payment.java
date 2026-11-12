@@ -1,11 +1,20 @@
 package com.smartpay.payment.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.UniqueConstraint;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "payments")
+@Table(
+        name = "payments",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_payment_user_idempotency",
+                        columnNames = {"user_id", "idempotency_key"}
+                )
+        }
+)
 public class Payment {
 
     @Id
@@ -27,6 +36,9 @@ public class Payment {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "idempotency_key", nullable = false, length = 100)
+    private String idempotencyKey;
 
     @PrePersist
     protected void onCreate() {
@@ -78,5 +90,13 @@ public class Payment {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getIdempotencyKey() {
+        return idempotencyKey;
+    }
+
+    public void setIdempotencyKey(String idempotencyKey) {
+        this.idempotencyKey = idempotencyKey;
     }
 }

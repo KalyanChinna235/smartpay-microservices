@@ -41,4 +41,13 @@ public class JwtService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
+    public Long extractUserId(String token) {
+        Object userId = extractClaims(token).get("userId");
+
+        if (!(userId instanceof Number)) {
+            throw new IllegalArgumentException("Invalid or missing userId claim");
+        }
+
+        return ((Number) userId).longValue();
+    }
 }

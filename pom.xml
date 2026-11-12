@@ -16,6 +16,7 @@
     <modules>
         <module>user-service</module>
         <module>payment-service</module>
+        <module>fraud-service</module>
     </modules>
 
     <properties>
