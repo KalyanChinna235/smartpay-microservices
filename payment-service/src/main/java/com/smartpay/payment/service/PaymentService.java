@@ -20,7 +20,6 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final PaymentWriter paymentWriter;
-    private final PaymentEventProducer paymentEventProducer;
 
     public PaymentService(
             PaymentRepository paymentRepository,
@@ -28,7 +27,6 @@ public class PaymentService {
             PaymentEventProducer paymentEventProducer) {
         this.paymentRepository = paymentRepository;
         this.paymentWriter = paymentWriter;
-        this.paymentEventProducer = paymentEventProducer;
     }
 
     public Payment createPayment(
@@ -71,9 +69,6 @@ public class PaymentService {
 
         try {
             Payment savedPayment = paymentWriter.savePayment(payment);
-
-            // Publish only for a newly created payment.
-            paymentEventProducer.publishPaymentCreatedEvent(savedPayment);
 
             return savedPayment;
 
